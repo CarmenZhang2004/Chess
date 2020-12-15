@@ -3,7 +3,7 @@ import processing.net.*;
 Server myServer;
 
 color lightbrown = #FFFFC3;
-color darkbrown  = #D8864E;
+color darkbrown = #D8864E;
 PImage wrook, wbishop, wknight, wqueen, wking, wpawn;
 PImage brook, bbishop, bknight, bqueen, bking, bpawn;
 boolean firstClick;

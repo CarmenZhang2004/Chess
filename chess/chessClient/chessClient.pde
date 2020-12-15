@@ -6,7 +6,9 @@ color lightbrown = #FFFFC3;
 color darkbrown = #D8864E;
 PImage wrook, wbishop, wknight, wqueen, wking, wpawn;
 PImage brook, bbishop, bknight, bqueen, bking, bpawn;
+boolean zkey;
 boolean firstClick;
+boolean itsMyTurn = false;
 int row1, col1, row2, col2;
 
 
@@ -58,6 +60,7 @@ void receiveMove(){
     int c2 = int (incoming.substring(6, 7));
     grid[r2][c2] = grid[r1][c1];
     grid[r1][c1] = ' ';
+    itsMyTurn = true;
   }
 }
 
@@ -101,11 +104,20 @@ void mouseReleased() {
   } else {
     row2 = mouseY/100;
     col2 = mouseX/100;
-    if (!(row2 == row1 && col2 == col1)) {
+    if (itsMyTurn && !(row2 == row1 && col2 == col1)) {
       grid[row2][col2] = grid[row1][col1];
       grid[row1][col1] = ' ';
       myClient.write(row1 + "," + col1 + "," + row2 + "," + col2);
       firstClick = true;
+      itsMyTurn = false;
     }
   }
+}
+
+void keyPressed(){
+  if (key == 'z' || key == 'Z') zkey = true;
+}
+
+void keyReleased(){
+  if (key == 'z' || key == 'Z') zkey = false;
 }

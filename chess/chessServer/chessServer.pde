@@ -84,7 +84,7 @@ void highlight(){
     noFill();
     stroke(255, 0, 0);
     strokeWeight(5);
-    rect(row1*100, col1*100, 100, 100);
+    rect(col1*100, row1*100, 100, 100);
   }
 }
 

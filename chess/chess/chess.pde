@@ -39,6 +39,7 @@ void setup() {
 
 void draw() {
   drawBoard();
+  highlightSquare();
   drawPieces();
 }
 

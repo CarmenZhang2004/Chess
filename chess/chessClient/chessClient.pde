@@ -79,10 +79,13 @@ void drawBoard() {
 }
 
 void highlight(){
-  if (firstClick == false){
+  if (firstClick == false && itsMyTurn){
     noFill();
     stroke(255, 0, 0);
     strokeWeight(5);
+    rect(col1*100, row1*100, 100, 100);
+  } else if (firstClick == true){
+    noStroke();
     rect(col1*100, row1*100, 100, 100);
   }
 }

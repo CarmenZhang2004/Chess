@@ -9,18 +9,18 @@ PImage brook, bbishop, bknight, bqueen, bking, bpawn;
 boolean zkey;
 boolean firstClick;
 boolean itsMyTurn = false;
-int row1, col1, row2, col2;
+int row1, col1, row2, col2, A, B, C, M;
 
 
 char grid[][] = {
-  {'R', 'B', 'N', 'Q', 'K', 'N', 'B', 'R'}, 
+  {'R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R'}, 
   {'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P'}, 
   {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '}, 
   {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '}, 
   {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '}, 
   {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '}, 
   {'p', 'p', 'p', 'p', 'p', 'p', 'p', 'p'}, 
-  {'r', 'b', 'n', 'q', 'k', 'n', 'b', 'r'}
+  {'r', 'n', 'b', 'q', 'k', 'b', 'n', 'r'}
 };
 
 void setup() {
@@ -47,6 +47,7 @@ void setup() {
 
 void draw() {
   drawBoard();
+  highlight();
   drawPieces();
   receiveMove();
 }
@@ -74,6 +75,15 @@ void drawBoard() {
       }
       rect(c*100, r*100, 100, 100);
     }
+  }
+}
+
+void highlight(){
+  if (firstClick == false){
+    noFill();
+    stroke(255, 0, 0);
+    strokeWeight(5);
+    rect(row1*100, col1*100, 100, 100);
   }
 }
 

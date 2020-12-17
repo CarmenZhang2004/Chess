@@ -6,11 +6,9 @@ color lightbrown = #FFFFC3;
 color darkbrown = #D8864E;
 PImage wrook, wbishop, wknight, wqueen, wking, wpawn;
 PImage brook, bbishop, bknight, bqueen, bking, bpawn;
-boolean zkey;
 boolean firstClick;
 boolean itsMyTurn = true;
 int row1, col1, row2, col2, A, B, C, M;
-
 
 char grid[][] = {
   {'R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R'}, 
@@ -22,6 +20,9 @@ char grid[][] = {
   {'p', 'p', 'p', 'p', 'p', 'p', 'p', 'p'}, 
   {'r', 'n', 'b', 'q', 'k', 'b', 'n', 'r'}
 };
+
+char back;
+char lastpiece;
 
 void setup() {
   size(800, 800);
@@ -62,6 +63,8 @@ void receiveMove(){
     int c2 = int (incoming.substring(6, 7));
     grid[r2][c2] = grid[r1][c1];
     grid[r1][c1] = ' ';
+    grid[row1][col1] = back;
+    grid[row2][col2] = lastpiece;
     itsMyTurn = true;
   }
 }
@@ -74,6 +77,8 @@ void drawBoard() {
       } else { 
         fill(darkbrown);
       }
+      stroke(0);
+      strokeWeight(1);
       rect(c*100, r*100, 100, 100);
     }
   }
@@ -82,10 +87,11 @@ void drawBoard() {
 void highlight(){
   if (firstClick == false && itsMyTurn){
     noFill();
-    stroke(255, 0, 0);
+    stroke(0);
     strokeWeight(5);
     rect(col1*100, row1*100, 100, 100);
   } else if (firstClick == true){
+    noFill();
     noStroke();
     rect(col1*100, row1*100, 100, 100);
   }
@@ -114,11 +120,13 @@ void mouseReleased() {
   if (firstClick) {
     row1 = mouseY/100;
     col1 = mouseX/100;
+    back = grid[row1][col1];
     firstClick = false;
   } else {
     row2 = mouseY/100;
     col2 = mouseX/100;
     if (itsMyTurn && !(row2 == row1 && col2 == col1)) {
+      lastpiece = grid[row2][col2];
       grid[row2][col2] = grid[row1][col1];
       grid[row1][col1] = ' ';
       myServer.write (row1 + "," + col1 + "," + row2 + "," + col2);
@@ -128,10 +136,10 @@ void mouseReleased() {
   }
 }
 
-void keyPressed(){
-  if (key == 'z' || key == 'Z') zkey = true;
-}
-
 void keyReleased(){
-  if (key == 'z' || key == 'Z') zkey = false;
+  if (key == 'z' || key == 'Z'){
+    grid[row1][col1] = back;
+    grid[row2][col2] = lastpiece;
+    itsMyTurn = true;
+  }
 }

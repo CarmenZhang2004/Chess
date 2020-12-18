@@ -51,6 +51,8 @@ void drawBoard() {
       } else { 
         fill(darkbrown);
       }
+      stroke(0);
+      strokeWeight(1);
       rect(c*100, r*100, 100, 100);
     }
   }

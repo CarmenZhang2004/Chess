@@ -8,7 +8,7 @@ PImage wrook, wbishop, wknight, wqueen, wking, wpawn;
 PImage brook, bbishop, bknight, bqueen, bking, bpawn;
 boolean firstClick;
 boolean itsMyTurn = true;
-int row1, col1, row2, col2, A, B, C, M;
+int row1, col1, row2, col2, M;
 
 char grid[][] = {
   {'R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R'}, 
@@ -51,10 +51,12 @@ void draw() {
   highlight();
   drawPieces();
   receiveMove();
+  //pawn();
 }
 
 void receiveMove(){
   Client myClient = myServer.available();
+  if(M == 0){
   if (myClient != null){
     String incoming = myClient.readString();
     int r1 = int (incoming.substring(0, 1));
@@ -63,9 +65,21 @@ void receiveMove(){
     int c2 = int (incoming.substring(6, 7));
     grid[r2][c2] = grid[r1][c1];
     grid[r1][c1] = ' ';
-    grid[row1][col1] = back;
-    grid[row2][col2] = lastpiece;
     itsMyTurn = true;
+  }
+  }
+  
+  if(M == 1){
+    if (myClient != null){
+      String incoming = myClient.readString();
+      int a = int (incoming.substring(8, 9));
+      int b = int (incoming.substring(10, 11));
+      int c = int (incoming.substring(12, 13));
+      int d = int (incoming.substring(14, 15));
+      grid[a][b] = back;
+      grid[c][d] = lastpiece;
+      itsMyTurn = false;
+    }
   }
 }
 
@@ -116,6 +130,13 @@ void drawPieces() {
   }
 }
 
+//void pawn(){
+  //int r = 0;
+  //if ('p' == grid[r][c]){
+    
+ // }
+//}
+
 void mouseReleased() {
   if (firstClick) {
     row1 = mouseY/100;
@@ -130,6 +151,7 @@ void mouseReleased() {
       grid[row2][col2] = grid[row1][col1];
       grid[row1][col1] = ' ';
       myServer.write (row1 + "," + col1 + "," + row2 + "," + col2);
+      M = 0;
       firstClick = true;
       itsMyTurn = false;
     }
@@ -138,6 +160,7 @@ void mouseReleased() {
 
 void keyReleased(){
   if (key == 'z' || key == 'Z'){
+    M = 1;
     grid[row1][col1] = back;
     grid[row2][col2] = lastpiece;
     itsMyTurn = true;

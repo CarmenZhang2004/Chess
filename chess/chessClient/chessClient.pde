@@ -55,6 +55,7 @@ void draw() {
 }
 
 void receiveMove(){
+  if(M ==0){
   if (myClient.available() > 0){
     String incoming = myClient.readString();
     int r1 = int (incoming.substring(0, 1));
@@ -63,9 +64,21 @@ void receiveMove(){
     int c2 = int (incoming.substring(6, 7));
     grid[r2][c2] = grid[r1][c1];
     grid[r1][c1] = ' ';
-    grid[row1][col1] = back;
-    grid[row2][col2] = lastpiece;
     itsMyTurn = true;
+  }
+  }
+  
+  if(M == 1){
+    if (myClient != null){
+      String incoming = myClient.readString();
+      int a = int (incoming.substring(8, 9));
+      int b = int (incoming.substring(10, 11));
+      int c = int (incoming.substring(12, 13));
+      int d = int (incoming.substring(14, 15));
+      grid[a][b] = back;
+      grid[c][d] = lastpiece;
+      itsMyTurn = false;
+    }
   }
 }  
 

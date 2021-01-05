@@ -25,7 +25,7 @@ char grid[][] = {
 };
 
 char lastpiece;
-char pro = 'p';
+char pro = 'P';
 
 void setup() {
   size(800, 800);

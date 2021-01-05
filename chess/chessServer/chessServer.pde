@@ -67,7 +67,7 @@ void receiveMove() {
     int M = int (incoming.substring(8, 9));
     lastpiece = incoming.charAt(10);
     pro = incoming.charAt(12);
-    println(incoming, M);
+    //println(incoming, M);
     if (M == 0) {
       grid[r2][c2] = grid[r1][c1];
       grid[r1][c1] = ' ';
@@ -81,7 +81,7 @@ void receiveMove() {
     }
 
     if (M == 2) {
-      println(r2, c2, pro);
+      //println(r2, c2, pro);
       if (grid[r2][c2] == 'P' && r2 == 7) {      
         grid[r2][c2] = pro;
         itsMyTurn = true;

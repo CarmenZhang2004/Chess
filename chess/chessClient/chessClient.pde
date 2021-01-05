@@ -66,7 +66,7 @@ void receiveMove(){
     int c2 = int (incoming.substring(6, 7));
     int M = int (incoming.substring(8, 9));
     lastpiece = incoming.charAt(10);
-    pro = incoming.charAt(11);
+    pro = incoming.charAt(12);
     
     if (M == 0){
       grid[r2][c2] = grid[r1][c1];
@@ -81,14 +81,7 @@ void receiveMove(){
     }
     
     if (M == 2){
-      //if(grid[r2][c2] == 'p' && r2 == 0){
-        //itsMyTurn = false;
-        //textSize(80);
-        //textAlign(CENTER, CENTER);
-        //fill(0);
-        //text("opponent is promoting...", 400, 400);
-      //} else 
-      if(grid[r2][c2] == 'P' && r2 == 7){
+      if(grid[r2][c2] == 'p' && r2 == 0){
         grid[r2][c2] = pro;
         itsMyTurn = true;
       }
@@ -207,7 +200,7 @@ void mouseReleased() {
     if (itsMyTurn && !(row2 == row1 && col2 == col1)) {
       grid[row2][col2] = grid[row1][col1];
       grid[row1][col1] = ' ';
-      myClient.write(row1 + "," + col1 + "," + row2 + "," + col2 + "," + 0 + "," + lastpiece + "," + pro);
+      myClient.write(row1 + "," + col1 + "," + row2 + "," + col2 + "," + 0 + "," + lastpiece + "," + "?");
       firstClick = true;
       itsMyTurn = false;
     }
@@ -225,8 +218,12 @@ void keyReleased(){
     M = 1;
     grid[row1][col1] = grid[row2][col2];
     grid[row2][col2] = lastpiece;
-    myClient.write(row1 + "," + col1 + "," + row2 + "," + col2 + "," + 1 + "," + lastpiece + "," + pro);
+    myClient.write(row1 + "," + col1 + "," + row2 + "," + col2 + "," + 1 + "," + lastpiece + "," + "?");
     promotion = false;
     itsMyTurn = true;
+  }
+  
+  if(key == 'q' || key == 'Q'){
+    
   }
 }

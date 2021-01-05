@@ -10,7 +10,7 @@ boolean firstClick;
 boolean itsMyTurn = false;
 boolean promotion;
 int row1, col1, row2, col2, M;
-int shadowOffset = 5;
+int shadowOffset = 3;
 
 
 char grid[][] = {
@@ -103,42 +103,41 @@ void pawn(){
   text("Choose", width/2, height/2.5);
 
   fill(255);
-  
   rect(530, 400, 100, 100);
   image(bqueen, 530, 400, 100, 100);
-  if (mouseX > 530 && mouseX < 630 && mouseY > 400 && mouseY < 500 && mousePressed) {
-      grid[row2][col2] = 'Q'; 
-      promotion = false;
-      pro = 'Q';
-      myClient.write(row1 + "," + col1 + "," + row2 + "," + col2 + "," + 2 + "," + lastpiece + "," + pro);
-  }
-  
+  textSize(30);
+  fill(lightbrown);
+  text("q", 580+shadowOffset, 520+shadowOffset);
+  fill(darkbrown);
+  text("q", 580, 520);
+
+  fill(255);
   rect(170, 400, 100, 100);
   image (brook, 170, 400, 100, 100);
-  if (mouseX > 170 && mouseX < 270 && mouseY > 400 && mouseY < 500 && mousePressed) {
-      grid[row2][col2] = 'R'; 
-      promotion = false;
-      pro = 'R';
-      myClient.write(row1 + "," + col1 + "," + row2 + "," + col2 + "," + 2 + "," + lastpiece + "," + pro);
-  }
-  
+  textSize(30);
+  fill(lightbrown);
+  text("r", 220+shadowOffset, 520+shadowOffset);
+  fill(darkbrown);
+  text("r", 220, 520);
+
+  fill(255);
   rect(410, 400, 100, 100);
   image(bknight, 410, 400, 100, 100);
-  if (mouseX > 410 && mouseX < 510 && mouseY > 400 && mouseY < 500 && mousePressed) {
-      grid[row2][col2] = 'N'; 
-      promotion = false;
-      pro = 'N';
-      myClient.write(row1 + "," + col1 + "," + row2 + "," + col2 + "," + 2 + "," + lastpiece + "," + pro);
-  }
+  textSize(30);
+  fill(lightbrown);
+  text("n", 460+shadowOffset, 520+shadowOffset);
+  fill(darkbrown);
+  text("n", 460, 520);
 
+  fill(255);
   rect(290, 400, 100, 100);
   image(bbishop, 290, 400, 100, 100);
-  if (mouseX > 290 && mouseX < 390 && mouseY > 400 && mouseY < 500 && mousePressed) {
-      grid[row2][col2] = 'B'; 
-      promotion = false;
-      pro = 'B';
-      myClient.write(row1 + "," + col1 + "," + row2 + "," + col2 + "," + 2 + "," + lastpiece + "," + pro);
-  }  
+  textSize(30);
+  fill(lightbrown);
+  text("b", 340+shadowOffset, 520+shadowOffset);
+  fill(darkbrown);
+  text("b", 340, 520);
+  
 }
 
 void drawBoard() {
@@ -223,7 +222,36 @@ void keyReleased(){
     itsMyTurn = true;
   }
   
-  if(key == 'q' || key == 'Q'){
-    
+  if (key == 'q' || key == 'Q'){
+    M = 2;
+    grid[row2][col2] = 'Q'; 
+    promotion = false;
+    pro = 'Q';
+    myClient.write(row1 + "," + col1 + "," + row2 + "," + col2 + "," + 2 + "," + lastpiece + "," + pro);
   }
+  
+  if (key == 'r' || key == 'R'){
+    M = 2;
+    grid[row2][col2] = 'R'; 
+    promotion = false;
+    pro = 'R';
+    myClient.write(row1 + "," + col1 + "," + row2 + "," + col2 + "," + 2 + "," + lastpiece + "," + pro);
+  }
+  
+  if (key == 'n' || key == 'N'){
+    M = 2;
+    grid[row2][col2] = 'N'; 
+    promotion = false;
+    pro = 'N';
+    myClient.write(row1 + "," + col1 + "," + row2 + "," + col2 + "," + 2 + "," + lastpiece + "," + pro);
+  }
+  
+  if (key == 'b' || key == 'B'){
+    M = 2;
+    grid[row2][col2] = 'B'; 
+    promotion = false;
+    pro = 'B';
+    myClient.write(row1 + "," + col1 + "," + row2 + "," + col2 + "," + 2 + "," + lastpiece + "," + pro);
+  }
+  
 }

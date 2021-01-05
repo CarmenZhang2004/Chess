@@ -229,34 +229,3 @@ void keyReleased(){
     itsMyTurn = true;
   }
 }
-//}
-
-void mouseReleased() {
-  if (firstClick) {
-    row1 = mouseY/100;
-    col1 = mouseX/100;
-    back = grid[row1][col1];
-    firstClick = false;
-  } else {
-    row2 = mouseY/100;
-    col2 = mouseX/100;
-    if (itsMyTurn && !(row2 == row1 && col2 == col1)) {
-      lastpiece = grid[row2][col2];
-      grid[row2][col2] = grid[row1][col1];
-      grid[row1][col1] = ' ';
-      myServer.write (row1 + "," + col1 + "," + row2 + "," + col2);
-      M = 0;
-      firstClick = true;
-      itsMyTurn = false;
-    }
-  }
-}
-
-void keyReleased(){
-  if (key == 'z' || key == 'Z'){
-    M = 1;
-    grid[row1][col1] = back;
-    grid[row2][col2] = lastpiece;
-    itsMyTurn = true;
-  }
-}

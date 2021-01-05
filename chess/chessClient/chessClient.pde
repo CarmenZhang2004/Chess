@@ -170,6 +170,7 @@ void highlight(){
     strokeWeight(5);
     rect(col1*100, row1*100, 100, 100);
   } else if (firstClick == true){
+    noFill();
     noStroke();
     rect(col1*100, row1*100, 100, 100);
   }

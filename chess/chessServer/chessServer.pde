@@ -8,7 +8,9 @@ PImage wrook, wbishop, wknight, wqueen, wking, wpawn;
 PImage brook, bbishop, bknight, bqueen, bking, bpawn;
 boolean firstClick;
 boolean itsMyTurn = true;
+boolean promotion;
 int row1, col1, row2, col2, M;
+int shadowOffset = 5;
 
 char grid[][] = {
   {'R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R'}, 
@@ -21,8 +23,8 @@ char grid[][] = {
   {'r', 'n', 'b', 'q', 'k', 'b', 'n', 'r'}
 };
 
-char back;
 char lastpiece;
+char pro = 'p';
 
 void setup() {
   size(800, 800);
@@ -51,36 +53,98 @@ void draw() {
   highlight();
   drawPieces();
   receiveMove();
-  //pawn();
+  if (promotion == true) pawn();
 }
 
 void receiveMove(){
   Client myClient = myServer.available();
-  if(M == 0){
   if (myClient != null){
     String incoming = myClient.readString();
     int r1 = int (incoming.substring(0, 1));
     int c1 = int (incoming.substring(2, 3));
     int r2 = int (incoming.substring(4, 5));
     int c2 = int (incoming.substring(6, 7));
-    grid[r2][c2] = grid[r1][c1];
-    grid[r1][c1] = ' ';
-    itsMyTurn = true;
-  }
-  }
-  
-  if(M == 1){
-    if (myClient != null){
-      String incoming = myClient.readString();
-      int a = int (incoming.substring(8, 9));
-      int b = int (incoming.substring(10, 11));
-      int c = int (incoming.substring(12, 13));
-      int d = int (incoming.substring(14, 15));
-      grid[a][b] = back;
-      grid[c][d] = lastpiece;
+    int M = int (incoming.substring(8, 9));
+    lastpiece = incoming.charAt(10);
+    pro = incoming.charAt(11);
+    
+    if (M == 0){
+      grid[r2][c2] = grid[r1][c1];
+      grid[r1][c1] = ' ';
+      itsMyTurn = true;
+    }
+    
+    if (M == 1){
+      grid[r1][c1] = grid[r2][c2];
+      grid[r2][c2] = lastpiece;
       itsMyTurn = false;
     }
+    
+    if (M == 2){
+      //if(grid[r2][c2] == 'P' && r2 == 7){
+          //textSize(80);
+          //textAlign(CENTER, CENTER);
+          //fill(0);
+          //text("opponent is promoting...", 400, 400);
+        //} else 
+        if(grid[r2][c2] == 'p' && r2 == 0){
+        grid[r2][c2] = pro;
+        itsMyTurn = true;
+      }
+    }
+    
   }
+}
+
+void pawn(){
+  stroke(0);
+  strokeWeight(2);
+  fill(247, 214, 152);
+  rect(120, 250, 560, 300);
+  textSize(70);
+  textAlign(CENTER, CENTER);
+  fill(lightbrown);
+  text("Choose", width/2+shadowOffset, height/2.5+shadowOffset);
+  fill(darkbrown);
+  text("Choose", width/2, height/2.5);
+
+  fill(255);
+  
+  rect(530, 400, 100, 100);
+  image(wqueen, 530, 400, 100, 100);
+  if (mouseX > 530 && mouseX < 630 && mouseY > 400 && mouseY < 500 && mousePressed) {
+      grid[row2][col2] = 'q'; 
+      promotion = false;
+      pro = 'q';
+      myServer.write(row1 + "," + col1 + "," + row2 + "," + col2 + "," + 2 + "," + lastpiece + "," + pro);
+  }
+  
+  rect(170, 400, 100, 100);
+  image (wrook, 170, 400, 100, 100);
+  if (mouseX > 170 && mouseX < 270 && mouseY > 400 && mouseY < 500 && mousePressed) {
+      grid[row2][col2] = 'r'; 
+      promotion = false;
+      pro = 'r';
+      myServer.write(row1 + "," + col1 + "," + row2 + "," + col2 + "," + 2 + "," + lastpiece + "," + pro);
+  }
+  
+  rect(410, 400, 100, 100);
+  image(wknight, 410, 400, 100, 100);
+  if (mouseX > 410 && mouseX < 510 && mouseY > 400 && mouseY < 500 && mousePressed) {
+      grid[row2][col2] = 'n'; 
+      promotion = false;
+      pro = 'n';
+      myServer.write(row1 + "," + col1 + "," + row2 + "," + col2 + "," + 2 + "," + lastpiece + "," + pro);
+  }
+
+  rect(290, 400, 100, 100);
+  image(wbishop, 290, 400, 100, 100);
+  if (mouseX > 290 && mouseX < 390 && mouseY > 400 && mouseY < 500 && mousePressed) {
+      grid[row2][col2] = 'b'; 
+      promotion = false;
+      pro = 'b';
+      myServer.write(row1 + "," + col1 + "," + row2 + "," + col2 + "," + 2 + "," + lastpiece + "," + pro);
+  }  
 }
 
 void drawBoard() {
@@ -130,11 +194,41 @@ void drawPieces() {
   }
 }
 
-//void pawn(){
-  //int r = 0;
-  //if ('p' == grid[r][c]){
-    
- // }
+void mouseReleased() {
+  if (firstClick) {
+    row1 = mouseY/100;
+    col1 = mouseX/100;
+    firstClick = false;
+  } else {
+    row2 = mouseY/100;
+    col2 = mouseX/100;
+    lastpiece = grid[row2][col2];
+    if (itsMyTurn && !(row2 == row1 && col2 == col1)) {
+      grid[row2][col2] = grid[row1][col1];
+      grid[row1][col1] = ' ';
+      myServer.write (row1 + "," + col1 + "," + row2 + "," + col2 + "," + 0 + "," + lastpiece + "," + pro);
+      firstClick = true;
+      itsMyTurn = false;
+    }
+  }
+  
+  if (grid[row2][col2] == 'p' && row2 == 0){
+    promotion = true;
+  } else {
+    promotion = false;
+  }
+}
+
+void keyReleased(){
+  if (key == 'z' || key == 'Z'){
+    M = 1;
+    grid[row1][col1] = grid[row2][col2];
+    grid[row2][col2] = lastpiece;
+    myServer.write(row1 + "," + col1 + "," + row2 + "," + col2 + "," + 1 + "," + lastpiece + "," + pro);
+    promotion = false;
+    itsMyTurn = true;
+  }
+}
 //}
 
 void mouseReleased() {
